@@ -1,12 +1,12 @@
 // Defining POJO.
 public class Coordinate {
-    String lat;
-    String lon;
+    double lat;
+    double lon;
 
     public Coordinate() {
     }
 
-    public Coordinate(String lat, String lon) {
+    public Coordinate(double lat, double lon) {
         this.lat = lat;
         this.lon = lon;
     }
