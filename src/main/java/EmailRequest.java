@@ -1,11 +1,11 @@
 public class EmailRequest {
-    String from;
-    To to;
+    Contact from;
+    Contact to;
     String withSubject;
     String withHTMLText;
     String withPlainText;
 
-    public EmailRequest(String from, To to, String withSubject, String withHTMLText, String withPlainText) {
+    public EmailRequest(Contact from, Contact to, String withSubject, String withHTMLText, String withPlainText) {
         this.from = from;
         this.to = to;
         this.withSubject = withSubject;

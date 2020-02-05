@@ -1,11 +1,8 @@
-import org.simplejavamail.api.email.CalendarMethod;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
-
-import static javax.mail.Message.RecipientType.BCC;
 
 public class SimpleEmailSender implements EmailSender {
     //http://www.simplejavamail.org/
@@ -37,8 +34,8 @@ public class SimpleEmailSender implements EmailSender {
 //                .buildEmail();
 
         Email email = EmailBuilder.startingBlank()
-                .to(emailRequest.to.name, emailRequest.to.oneOrMoreAddresses)
-                .from(emailRequest.from)
+                .to(emailRequest.to.name, emailRequest.to.eAddress)
+                .from(emailRequest.from.name, emailRequest.from.eAddress)
                 .withSubject(emailRequest.withSubject)
                 .withHTMLText(emailRequest.withHTMLText)
                 .withPlainText(emailRequest.withPlainText)
@@ -60,11 +57,15 @@ public class SimpleEmailSender implements EmailSender {
     }
     public static void main(String[] args) {
         SimpleEmailSender try1 = new SimpleEmailSender();
-        To to = new To("jacov.g", "jacov.g@gmail.com");
-        EmailRequest emailRequest = new EmailRequest("kobygs78@gmail.com", to, "hey2",
-                "<img src='cid:wink1'><b>We should meet up!</b><img src='cid:wink2'>",
-                "Please view this email in a modern email client!");
-
+        Contact to = new Contact("Jacov.g", "jacov.g@gmail.com");
+        Contact from = new Contact("Koby.gs", "kobygs78@gmail.com");
+        EmailRequest emailRequest = new EmailRequestBuilder()
+                .setFrom(from)
+                .setTo(to)
+                .setWithSubject("hey3")
+                .setWithHTMLText("<img src='cid:wink1'><b>We should meet up!</b><img src='cid:wink2'>")
+                .setWithPlainText("Please view this email in a modern email client!")
+                .createEmailRequest();
 
         try1.send(emailRequest);
     }
