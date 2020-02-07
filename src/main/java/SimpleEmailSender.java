@@ -9,32 +9,7 @@ import java.util.Arrays;
 public class SimpleEmailSender implements EmailSender {
     //http://www.simplejavamail.org/
     public EmailResponse send(EmailRequest emailRequest) {
-//        Email email = EmailBuilder.startingBlank()
-//                .to("jacov", "jacov.g@gmail.com")
-//                .from("kobygs78@gmail.com")
-////                .to("C. Cane", "candycane@candyshop.org")
-////                .ccWithFixedName("C. Bo group", "chocobo1@candyshop.org", "chocobo2@candyshop.org")
-//               // .withRecipientsUsingFixedName("Tasting Group", BCC,
-//               //         "taster1@cgroup.org;taster2@cgroup.org;tester <taster3@cgroup.org>")
-////                .bcc("Mr Sweetnose <snose@candyshop.org>")
-////                .withReplyTo("lollypop", "lolly.pop@othermail.com")
-//                .withSubject("hey")
-//                .withHTMLText("<img src='cid:wink1'><b>We should meet up!</b><img src='cid:wink2'>")
-//                .withPlainText("Please view this email in a modern email client!")
-//        //        .withCalendar(CalendarMethod.REQUEST, iCalendarText)
-//        //        .withEmbeddedImage("wink1", imageByteArray, "image/png")
-//        //        .withEmbeddedImage("wink2", imageDatesource)
-//        //        .withAttachment("invitation", pdfByteArray, "application/pdf")
-//        //        .withAttachment("dresscode", odfDatasource)
-////                .withHeader("X-Priority", 5)
-////                .withReturnReceiptTo()
-////                .withDispositionNotificationTo("notify-read-emails@candyshop.com")
-////                .withBounceTo("tech@candyshop.com")
-////                .signWithDomainKey(privateKeyData, "somemail.com", "selector") // DKIM
-////                .signWithSmime(pkcs12Config)
-////                .encryptWithSmime(x509Certificate)
-//                .buildEmail();
-
+//
         Email email = EmailBuilder.startingBlank()
                 .to(emailRequest.to.name, emailRequest.to.toString())
                 .from(emailRequest.from.name, emailRequest.from.toString())
