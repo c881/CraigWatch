@@ -4,6 +4,8 @@ import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 
+import java.util.Arrays;
+
 public class SimpleEmailSender implements EmailSender {
     //http://www.simplejavamail.org/
     public EmailResponse send(EmailRequest emailRequest) {
@@ -34,8 +36,8 @@ public class SimpleEmailSender implements EmailSender {
 //                .buildEmail();
 
         Email email = EmailBuilder.startingBlank()
-                .to(emailRequest.to.name, emailRequest.to.eAddress)
-                .from(emailRequest.from.name, emailRequest.from.eAddress)
+                .to(emailRequest.to.name, emailRequest.to.toString())
+                .from(emailRequest.from.name, emailRequest.from.toString())
                 .withSubject(emailRequest.withSubject)
                 .withHTMLText(emailRequest.withHTMLText)
                 .withPlainText(emailRequest.withPlainText)
@@ -57,8 +59,8 @@ public class SimpleEmailSender implements EmailSender {
     }
     public static void main(String[] args) {
         SimpleEmailSender try1 = new SimpleEmailSender();
-        Contact to = new Contact("Jacov.g", "jacov.g@gmail.com");
-        Contact from = new Contact("Koby.gs", "kobygs78@gmail.com");
+        Contact to = new Contact("Jacov.g", Arrays.asList("jacov.g@gmail.com","amir.galanty@gmail.com"));
+        Contact from = new Contact("Koby.gs", Arrays.asList("kobygs78@gmail.com"));
         EmailRequest emailRequest = new EmailRequestBuilder()
                 .setFrom(from)
                 .setTo(to)
@@ -70,5 +72,3 @@ public class SimpleEmailSender implements EmailSender {
         try1.send(emailRequest);
     }
 }
-
-
