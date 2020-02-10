@@ -20,8 +20,6 @@ public class Parser {
         Coordinate apartment = getCoordinate(innerUrl);
         System.out.println(apartment);
 
-
-
     }
 
     private static Coordinate getCoordinate(String innerUrl) throws IOException {

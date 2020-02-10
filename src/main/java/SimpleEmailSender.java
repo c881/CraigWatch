@@ -1,4 +1,5 @@
 import org.simplejavamail.api.email.Email;
+import org.simplejavamail.api.mailer.AsyncResponse;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
@@ -29,8 +30,12 @@ public class SimpleEmailSender implements EmailSender {
                 .buildMailer();
 
         mailer.sendMail(email);
+//        AsyncResponse asyncResponse = mailer.sendMail(email, true);
+//        asyncResponse.onSuccess(() -> System.out.println("Success"));
+//        asyncResponse.onException((e) -> System.err.println("error"));
+        EmailResponse emailResponse = new EmailResponse(true);
 
-        return null;
+        return emailResponse;
     }
     public static void main(String[] args) {
         SimpleEmailSender try1 = new SimpleEmailSender();
@@ -45,5 +50,6 @@ public class SimpleEmailSender implements EmailSender {
                 .createEmailRequest();
 
         try1.send(emailRequest);
+
     }
 }

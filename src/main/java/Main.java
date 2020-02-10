@@ -1,3 +1,9 @@
+import com.opencsv.CSVReader;
+
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+
 //
 /*
 Needed components:
@@ -7,36 +13,35 @@ Needed components:
  Notifier - Favorite format massage
 */
 public class Main {
-    int i = 3;
-    Integer it = 3;
-    Integer it2 = new Integer(7);
-    String s;
-
-    public Main() {
-    }
-
-    public Main(int i) {
-        this.i = i;
-    }
-
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        Main myMain = new Main();
-        Main myMain2 = new Main(6);
-        System.out.println("main " + myMain.i);
-        System.out.println("main2 " + myMain2.i);
-        myMain.i = 27;
-        myMain.incMyI(5);
-        System.out.println("main " + myMain.i);
+        try {
+            // Create an object of filereader
+            // class with CSV file as a parameter.
+            String file = "/home/jacov/temp.csv";
+            FileReader filereader = new FileReader(file);
 
-        myMain.printMyI();
-    }
+            // create csvReader object passing
+            // file reader as a parameter
+            CSVReader csvReader = new CSVReader(filereader);
+            String[] nextRecord;
+            List<Coordinate> coordinates = new ArrayList<>();
 
-    public void incMyI(int a){
-        i += a;
-    }
-    public void printMyI(){
-        System.out.println(i);
-    }
+            // we are going to read data line by line
+            while ((nextRecord = csvReader.readNext()) != null) {
+//                for (String cell : nextRecord) {
+//                    System.out.print(cell + "\t");
+//                }
+//                System.out.println();
+                double lon = Double.parseDouble(nextRecord[nextRecord.length-2]);
+                double lat = Double.parseDouble(nextRecord[nextRecord.length-1]);
+                Coordinate location = new Coordinate(lon,lat);
+                coordinates.add(location);
 
+            }
+            System.out.println(coordinates);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

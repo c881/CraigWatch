@@ -1,3 +1,7 @@
 public class EmailResponse {
-    Boolean success;
+    boolean success;
+
+    public EmailResponse(boolean mailResponse) {
+        this.success = mailResponse;
+    }
 }
