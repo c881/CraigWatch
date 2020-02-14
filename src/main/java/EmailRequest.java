@@ -1,4 +1,6 @@
-public class EmailRequest {
+import org.simplejavamail.api.email.Recipient;
+
+public class EmailRequest { //    Contact from;
     Contact from;
     Contact to;
     String withSubject;

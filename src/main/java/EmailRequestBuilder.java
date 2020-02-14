@@ -1,6 +1,10 @@
+import org.simplejavamail.api.email.Recipient;
+
 public class EmailRequestBuilder {
     private Contact from;
     private Contact to;
+//    private Recipient from;
+//    private Recipient to;
     private String withSubject;
     private String withHTMLText;
     private String withPlainText;

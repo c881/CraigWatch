@@ -2,18 +2,19 @@ import java.util.List;
 
 public class Contact {
     String name;
-    List<String> eAddresses;
+    String eAddress;
 
     @Override
     public String toString() {
-        return String.join(" ,",this.eAddresses);
+        return "Contact{" +
+                "name='" + name + '\'' +
+                ", eAddress='" + eAddress + '\'' +
+                '}';
     }
 
-
-
-    public Contact(String name, List<String> eAddresses) {
+    public Contact(String name, String eAddress) {
         this.name = name;
-        this.eAddresses = eAddresses;
+        this.eAddress = eAddress;
     }
 
 }
