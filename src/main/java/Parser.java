@@ -1,11 +1,14 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+
+// צריכים להוציא את titletextonly ואת div class="mapaddress"
+// להפוך את העבודה ל -ASSET במקום COORDINATE
 
 public class Parser {
 
@@ -22,7 +25,7 @@ public class Parser {
 
     }
 
-    private static Coordinate getCoordinate(String innerUrl) throws IOException {
+    public static Coordinate getCoordinate(String innerUrl) throws IOException {
         Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
 
         Elements gps = doc.head().getElementsByAttributeValue("name","geo.position");
@@ -31,7 +34,7 @@ public class Parser {
         return new Coordinate(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
     }
 
-    private static Set<String> getLinks(String url) throws IOException {
+    public static Set<String> getLinks(String url) throws IOException {
         Document doc = Jsoup.connect(url).maxBodySize(0).get();
         Elements allLinkElements = doc.select("li.result-row > a");
         allLinkElements.forEach(e -> e.attr("href"));
