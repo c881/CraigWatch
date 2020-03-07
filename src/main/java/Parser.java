@@ -20,9 +20,19 @@ public class Parser {
 
         String innerUrl = outerLinks.iterator().next();
 
+        String title = Title(innerUrl);
+
+
         Coordinate apartment = getCoordinate(innerUrl);
         System.out.println(apartment);
 
+    }
+
+    public static String Title(String innerUrl) throws IOException {
+        Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
+        Elements title = doc.body().getElementsByAttributeValue("property","og:title");
+        String titleContent = title.attr("content");
+        return titleContent;
     }
 
     public static Coordinate getCoordinate(String innerUrl) throws IOException {

@@ -1,20 +1,20 @@
 import java.util.List;
 
-public class Contact {
+public class Contact{
     String name;
-    String eAddress;
+    String address;
 
     @Override
     public String toString() {
         return "Contact{" +
                 "name='" + name + '\'' +
-                ", eAddress='" + eAddress + '\'' +
+                ", eAddress='" + address + '\'' +
                 '}';
     }
 
-    public Contact(String name, String eAddress) {
+    public Contact(String name, String address) {
         this.name = name;
-        this.eAddress = eAddress;
+        this.address = address;
     }
 
 }

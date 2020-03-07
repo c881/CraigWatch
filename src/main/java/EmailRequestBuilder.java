@@ -1,27 +1,25 @@
-import org.simplejavamail.api.email.Recipient;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class EmailRequestBuilder {
-//    private Contact from;
+    private Contact from;
 //    private Contact to;
-//    private List<Contact> toList;
-    private Recipient from;
-    private List<Recipient> toList;
+    private List<Contact> toList;
+//    private Recipient from;
+//    private List<Recipient> toList;
     private String withSubject;
     private String withHTMLText;
     private String withPlainText;
 
-//    public EmailRequestBuilder setFrom(Contact from) {
-    public EmailRequestBuilder setFrom(Recipient from) {
+    public EmailRequestBuilder setFrom(Contact from) {
+//    public EmailRequestBuilder setFrom(Recipient from) {
         this.from = from;
         return this;
     }
 
-//    public EmailRequestBuilder setTo(Contact to) {
-    public EmailRequestBuilder to(Recipient...toList) {
+//    public EmailRequestBuilder setTo(Recipient to) {
+    public EmailRequestBuilder to(Contact...toList) {
         if(this.toList == null){
             this.toList = new LinkedList<>();
         }
