@@ -9,6 +9,11 @@ public class AssetBuilder {
         return this;
     }
 
+    public AssetBuilder setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     public AssetBuilder setUrl(String Url){
         this.url = url;
         return this;

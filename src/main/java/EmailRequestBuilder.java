@@ -13,12 +13,10 @@ public class EmailRequestBuilder {
     private String withPlainText;
 
     public EmailRequestBuilder setFrom(Contact from) {
-//    public EmailRequestBuilder setFrom(Recipient from) {
         this.from = from;
         return this;
     }
 
-//    public EmailRequestBuilder setTo(Recipient to) {
     public EmailRequestBuilder setTo(Contact...to) {
         if(this.to == null){
             this.to = new LinkedList<>();

@@ -27,17 +27,22 @@ public class Parser {
 
     public static Asset getAsset(String innerUrl) throws IOException {
         Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
-        Elements title = doc.head().getElementsByAttributeValue("property","og:title");
-        String titleContent = title.attr("content");
 
         Elements gps = doc.head().getElementsByAttributeValue("name","geo.position");
         String gpsContent = gps.attr("content");
         String[] split = gpsContent.split(";");
 
-        Elements address = doc.select("div.mapaddress");
+        String description = doc.getElementById("titletextonly").text();
 
-        return new Asset("","","",new Coordinate());
-//        return new Asset(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
+        Coordinate coordinate = new Coordinate(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
+        String address = "";
+        try {
+            address = doc.select("div.mapaddress").text();
+        }
+        catch (Exception e){
+        }
+
+        return new Asset(address, description, innerUrl, coordinate);
     }
 
     public static Set<String> getLinks(String url) throws IOException {
