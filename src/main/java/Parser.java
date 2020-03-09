@@ -20,28 +20,24 @@ public class Parser {
 
         String innerUrl = outerLinks.iterator().next();
 
-        String title = Title(innerUrl);
-
-
-        Coordinate apartment = getCoordinate(innerUrl);
+        Asset apartment = getAsset(innerUrl);
         System.out.println(apartment);
 
     }
 
-    public static String Title(String innerUrl) throws IOException {
+    public static Asset getAsset(String innerUrl) throws IOException {
         Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
-        Elements title = doc.body().getElementsByAttributeValue("property","og:title");
+        Elements title = doc.head().getElementsByAttributeValue("property","og:title");
         String titleContent = title.attr("content");
-        return titleContent;
-    }
-
-    public static Coordinate getCoordinate(String innerUrl) throws IOException {
-        Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
 
         Elements gps = doc.head().getElementsByAttributeValue("name","geo.position");
-        String content = gps.attr("content");
-        String[] split = content.split(";");
-        return new Coordinate(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
+        String gpsContent = gps.attr("content");
+        String[] split = gpsContent.split(";");
+
+        Elements address = doc.select("div.mapaddress");
+
+        return new Asset("","","",new Coordinate());
+//        return new Asset(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
     }
 
     public static Set<String> getLinks(String url) throws IOException {

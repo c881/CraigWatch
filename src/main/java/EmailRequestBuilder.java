@@ -5,7 +5,7 @@ import java.util.List;
 public class EmailRequestBuilder {
     private Contact from;
 //    private Contact to;
-    private List<Contact> toList;
+    private List<Contact> to;
 //    private Recipient from;
 //    private List<Recipient> toList;
     private String withSubject;
@@ -19,11 +19,11 @@ public class EmailRequestBuilder {
     }
 
 //    public EmailRequestBuilder setTo(Recipient to) {
-    public EmailRequestBuilder to(Contact...toList) {
-        if(this.toList == null){
-            this.toList = new LinkedList<>();
+    public EmailRequestBuilder setTo(Contact...to) {
+        if(this.to == null){
+            this.to = new LinkedList<>();
         }
-        this.toList.addAll(Arrays.asList(toList));
+        this.to.addAll(Arrays.asList(to));
         return this;
     }
 
@@ -44,6 +44,6 @@ public class EmailRequestBuilder {
     }
 
     public EmailRequest createEmailRequest() {
-        return new EmailRequest(from, toList, withSubject, withHTMLText, withPlainText);
+        return new EmailRequest(from, to, withSubject, withHTMLText, withPlainText);
     }
 }

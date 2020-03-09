@@ -7,14 +7,19 @@ import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 
 import javax.mail.Message;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SimpleEmailSender implements EmailSender {
     //http://www.simplejavamail.org/
     public EmailResponse send(EmailRequest emailRequest) {
 //
         EmailPopulatingBuilder emailPopulatingBuilder = EmailBuilder.startingBlank();
-        emailPopulatingBuilder.to(emailRequest.toList);
-        emailPopulatingBuilder.from(emailRequest.from);
+        Collection<Contact> tos = emailRequest.to;
+        List<Recipient> recipients = tos.stream().map(to -> convert(to)).collect(Collectors.toList());
+        emailPopulatingBuilder.to(recipients);
+//        emailPopulatingBuilder.from(convert(emailRequest.from));
         emailPopulatingBuilder.withSubject(emailRequest.withSubject);
         emailPopulatingBuilder.withHTMLText(emailRequest.withHTMLText);
         emailPopulatingBuilder.withPlainText(emailRequest.withPlainText);//                .to(emailRequest.to.name, emailRequest.to.eAddress)
@@ -39,14 +44,14 @@ public class SimpleEmailSender implements EmailSender {
     }
     public static void main(String[] args) {
         SimpleEmailSender try1 = new SimpleEmailSender();
-        Recipient toJacov = new Contact("Jacov.g", "jacov.g@gmail.com");
-        Recipient toAmir = new Contact("Jacov.g", "amir.galanty@gmail.com");
-        Recipient toNamesList = new Contact("all","jacov.g@gmail.com;amir.galanty@gmail.com",
-                Message.RecipientType.TO);
-        Recipient from = new Contact("Koby.gs", "kobygs78@gmail.com");
+        Contact toJacov = new Contact("Jacov.g", "jacov.g@gmail.com");
+        Contact toAmir = new Contact("Jacov.g", "amir.galanty@gmail.com");
+//        Contact toNamesList = new Contact("all","jacov.g@gmail.com;amir.galanty@gmail.com",
+//                Message.RecipientType.TO);
+        Contact from = new Contact("Koby.gs", "kobygs78@gmail.com");
         EmailRequest emailRequest = new EmailRequestBuilder()
-                .setFrom(from)
-                .to(toJacov, toAmir)
+//                .setFrom(from)
+//                .setTo(toJacov)
 //                .to(toNamesList)
                 .setWithSubject("hey hello")
                 .setWithHTMLText("<img src='cid:wink1'><b>We should meet up!</b><img src='cid:wink2'>")
@@ -55,5 +60,9 @@ public class SimpleEmailSender implements EmailSender {
 
         try1.send(emailRequest);
 
+    }
+    public Recipient convert(Contact contact){
+        Recipient recipient = new Recipient(contact.name, contact.address, Message.RecipientType.TO);
+        return recipient;
     }
 }

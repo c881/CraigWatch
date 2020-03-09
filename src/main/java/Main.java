@@ -50,18 +50,18 @@ public class Main {
 //            System.out.println(ownCoordinates);
             String url = "https://sfbay.craigslist.org/search/sfc/apa";
             Set<String> links = Parser.getLinks(url);
-            Set<Coordinate> urlCoordinates = new HashSet<>();
+            Set<Asset> urlAssets = new HashSet<>();
             for (String link : links) {
-                Coordinate urlCoordinate = Parser.getCoordinate(link);
-                urlCoordinates.add(urlCoordinate);
+                Asset urlCoordinate = Parser.getAsset(link);
+                urlAssets.add(urlCoordinate);
             }
 
 //            List<Double>
             for (int i = 0; i < ownAssets.size(); i++) {
-                for (Coordinate urlCoordinate : urlCoordinates) {
-
-
-                }
+//                for (Coordinate urlCoordinate : urlCoordinates) {
+//
+//
+//                }
             }
 
         }
