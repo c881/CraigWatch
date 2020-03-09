@@ -41,8 +41,13 @@ public class Parser {
         }
         catch (Exception e){
         }
-
-        return new Asset(address, description, innerUrl, coordinate);
+        Asset asset = AssetBuilder.builder()
+                                .setAddress(address)
+                                .setDescription(description)
+                                .setUrl(innerUrl)
+                                .setCoordinate(coordinate)
+                                .build();
+        return asset;
     }
 
     public static Set<String> getLinks(String url) throws IOException {

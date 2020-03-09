@@ -14,7 +14,7 @@ public class AssetBuilder {
         return this;
     }
 
-    public AssetBuilder setUrl(String Url){
+    public AssetBuilder setUrl(String url){
         this.url = url;
         return this;
     }
@@ -24,8 +24,12 @@ public class AssetBuilder {
         return this;
     }
 
+    public static AssetBuilder builder(){
+        return new AssetBuilder();
+    }
 
-    public Asset createAsset() {
+
+    public Asset build() {
         return new Asset(address, description, url, coordinate);
     }
 }

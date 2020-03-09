@@ -13,4 +13,14 @@ public class Asset {
         this.url = url;
         this.coordinate = coordinate;
     }
+
+    @Override
+    public String toString() {
+        return "Asset{" +
+                "address='" + address + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", coordinate=" + coordinate +
+                '}';
+    }
 }

@@ -14,17 +14,16 @@ import java.util.stream.Collectors;
 public class SimpleEmailSender implements EmailSender {
     //http://www.simplejavamail.org/
     public EmailResponse send(EmailRequest emailRequest) {
-//
-        EmailPopulatingBuilder emailPopulatingBuilder = EmailBuilder.startingBlank();
-        Collection<Contact> tos = emailRequest.to;
-        List<Recipient> recipients = tos.stream().map(to -> convert(to)).collect(Collectors.toList());
-        emailPopulatingBuilder.to(recipients);
-//        emailPopulatingBuilder.from(convert(emailRequest.from));
-        emailPopulatingBuilder.withSubject(emailRequest.withSubject);
-        emailPopulatingBuilder.withHTMLText(emailRequest.withHTMLText);
-        emailPopulatingBuilder.withPlainText(emailRequest.withPlainText);//                .to(emailRequest.to.name, emailRequest.to.eAddress)
-//                .from(emailRequest.from.name, emailRequest.from.eAddress)
-        Email email = emailPopulatingBuilder
+        List<Recipient> recipients = emailRequest.to.stream().
+                map(to -> convert(to)).
+                collect(Collectors.toList());
+
+        Email email = EmailBuilder.startingBlank()
+                .to(recipients)
+                .withSubject(emailRequest.withSubject)
+                .withHTMLText(emailRequest.withHTMLText)
+                .withPlainText(emailRequest.withPlainText)
+                .from(convert(emailRequest.from))
                 .buildEmail();
 
 
