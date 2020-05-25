@@ -16,11 +16,9 @@ public class Asset {
 
     @Override
     public String toString() {
-        return "Asset{" +
-                "address='" + address + '\'' +
+        return  "address='" + address + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
-                ", coordinate=" + coordinate +
-                '}';
+                ", coordinate=" + coordinate;
     }
 }

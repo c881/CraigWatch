@@ -18,6 +18,8 @@ public class Parser {
         Set<String> outerLinks = getLinks(url);
         System.out.println(outerLinks);
 
+// לעבור על כל רשימת הלינקים לשלוף את כל ה-ASSESTS
+
         String innerUrl = outerLinks.iterator().next();
 
         Asset apartment = getAsset(innerUrl);

@@ -30,10 +30,6 @@ public class Main {
 
             // we are going to read data line by line
             while ((nextRecord = csvReader.readNext()) != null) {
-//                for (String cell : nextRecord) {
-//                    System.out.print(cell + "\t");
-//                }
-//                System.out.println();
                 Asset asset = new Asset();
 
                 double lon = Double.parseDouble(nextRecord[nextRecord.length-2]);
@@ -50,19 +46,33 @@ public class Main {
 //            System.out.println(ownCoordinates);
             String url = "https://sfbay.craigslist.org/search/sfc/apa";
             Set<String> links = Parser.getLinks(url);
-            Set<Asset> urlAssets = new HashSet<>();
+            Set<Asset> assetsForRent = new HashSet<>();
             for (String link : links) {
-                Asset urlCoordinate = Parser.getAsset(link);
-                urlAssets.add(urlCoordinate);
+                Asset assetForRent = Parser.getAsset(link);
+                assetsForRent.add(assetForRent);
             }
 
-//            List<Double>
-            for (int i = 0; i < ownAssets.size(); i++) {
-//                for (Coordinate urlCoordinate : urlCoordinates) {
-//
-//
-//                }
+            List<AssetsWrapper> assetsWrappers = new ArrayList<>();
+            DistanceCalculator calculator = new HaversineCalculator();
+
+            double marginDistance = 15;
+
+            for (Asset own : ownAssets) {
+                for (Asset forRent : assetsForRent) {
+                    AssetsWrapper assetsWrapper = new AssetsWrapper(own, forRent,
+                            calculator.calculate(own.coordinate, forRent.coordinate));
+                    assetsWrappers.add(assetsWrapper);
+                }
             }
+
+            for (AssetsWrapper assetsWrapper : assetsWrappers)
+            {
+                if (assetsWrapper.distance < marginDistance)
+                {
+                    System.out.println(assetsWrapper);
+                }
+            }
+
 
         }
         catch (Exception e) {
