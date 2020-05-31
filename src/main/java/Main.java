@@ -30,15 +30,16 @@ public class Main {
 
             // we are going to read data line by line
             while ((nextRecord = csvReader.readNext()) != null) {
-                Asset asset = new Asset();
-
                 double lon = Double.parseDouble(nextRecord[nextRecord.length-2]);
                 double lat = Double.parseDouble(nextRecord[nextRecord.length-1]);
                 Coordinate coordinate = new Coordinate(lon,lat);
 
-                asset.coordinate = coordinate;
-                asset.url = nextRecord[0];
-                asset.address = nextRecord[1];
+                Asset asset = AssetBuilder.builder()
+                        .setAddress(nextRecord[1])
+                        .setDescription(nextRecord[2])
+                        .setUrl(nextRecord[0])
+                        .setCoordinate(coordinate)
+                        .build();
 
                 ownAssets.add(asset);
 
@@ -72,7 +73,6 @@ public class Main {
                     System.out.println(assetsWrapper);
                 }
             }
-
 
         }
         catch (Exception e) {
