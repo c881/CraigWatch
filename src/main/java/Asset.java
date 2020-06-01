@@ -3,15 +3,49 @@ public class Asset {
     String description;
     String url;
     Coordinate coordinate;
+    long dateTime;
 
     public Asset() {
     }
 
-    public Asset(String address, String description, String url, Coordinate coordinate) {
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public long getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(long dateTime) {
+        this.dateTime = dateTime;
     }
 
     @Override
@@ -19,6 +53,7 @@ public class Asset {
         return  "address='" + address + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
-                ", coordinate=" + coordinate;
+                ", coordinate=" + coordinate+ '\'' +
+                ", posted=" + dateTime;
     }
 }

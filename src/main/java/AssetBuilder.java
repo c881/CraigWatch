@@ -2,7 +2,15 @@ public class AssetBuilder {
     String address;
     String description;
     String url;
+    long dateTime;
     Coordinate coordinate;
+
+
+    public AssetBuilder setDateTime(long dateTime) {
+        this.dateTime = dateTime;
+        return this;
+    }
+
 
     public AssetBuilder setAddress(String address){
         this.address = address;
@@ -30,6 +38,12 @@ public class AssetBuilder {
 
 
     public Asset build() {
-        return new Asset(address, description, url, coordinate);
+        Asset asset = new Asset();
+        asset.setAddress(address);
+        asset.setCoordinate(coordinate);
+        asset.setDescription(description);
+        asset.setUrl(url);
+        asset.setDateTime(dateTime);
+        return asset;
     }
 }

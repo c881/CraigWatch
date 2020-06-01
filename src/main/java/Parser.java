@@ -3,6 +3,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,12 +33,18 @@ public class Parser {
 
     public static Asset getAsset(String innerUrl) throws IOException {
         Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
+        long timeStamp = 0;
 
         Elements gps = doc.head().getElementsByAttributeValue("name","geo.position");
         String gpsContent = gps.attr("content");
         String[] split = gpsContent.split(";");
 
         String description = doc.getElementById("titletextonly").text();
+        Elements date_timeago = doc.getElementById("display-date").getElementsByTag("time");
+        if (!date_timeago.isEmpty()) {
+            String date_time = date_timeago.first().attr("datetime");
+            timeStamp = TimeUtil.getEpoch(date_time);
+        }
 
         Coordinate coordinate = new Coordinate(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
         String address = "";
@@ -48,6 +58,7 @@ public class Parser {
                                 .setDescription(description)
                                 .setUrl(innerUrl)
                                 .setCoordinate(coordinate)
+                                .setDateTime(timeStamp)
                                 .build();
         return asset;
     }
