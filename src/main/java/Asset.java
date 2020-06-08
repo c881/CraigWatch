@@ -1,13 +1,30 @@
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "assets")
 public class Asset {
+    @DatabaseField(generatedId = true)
+    private int id;
+    @DatabaseField
     String address;
+    @DatabaseField
     String description;
+    @DatabaseField
     String url;
+    @DatabaseField
     Coordinate coordinate;
+    @DatabaseField
     long dateTime;
 
     public Asset() {
     }
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getAddress() {
         return address;
     }
