@@ -40,7 +40,8 @@ public class AssetBuilder {
     public Asset build() {
         Asset asset = new Asset();
         asset.setAddress(address);
-        asset.setCoordinate(coordinate);
+        asset.setLat(coordinate.lat);
+        asset.setLon(coordinate.lon);
         asset.setDescription(description);
         asset.setUrl(url);
         asset.setDateTime(dateTime);

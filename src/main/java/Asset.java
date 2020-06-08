@@ -5,14 +5,22 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Asset {
     @DatabaseField(generatedId = true)
     private int id;
+
     @DatabaseField
     String address;
+
     @DatabaseField
     String description;
+
     @DatabaseField
     String url;
+
     @DatabaseField
-    Coordinate coordinate;
+    double lon;
+
+    @DatabaseField
+    double lat;
+
     @DatabaseField
     long dateTime;
 
@@ -49,12 +57,20 @@ public class Asset {
         this.url = url;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public double getLon() {
+        return lon;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
     public long getDateTime() {
@@ -70,7 +86,7 @@ public class Asset {
         return  "address='" + address + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
-                ", coordinate=" + coordinate+ '\'' +
+                ", coordinate=" + '\'' +
                 ", posted=" + dateTime;
     }
 }
