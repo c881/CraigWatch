@@ -45,13 +45,8 @@ public class SimpleEmailSender implements EmailSender {
         SimpleEmailSender try1 = new SimpleEmailSender();
         Contact toJacov = new Contact("Jacov.g", "jacov.g@gmail.com");
         Contact toAmir = new Contact("Jacov.g", "amir.galanty@gmail.com");
-//        Contact toNamesList = new Contact("all","jacov.g@gmail.com;amir.galanty@gmail.com",
-//                Message.RecipientType.TO);
         Contact from = new Contact("Koby.gs", "kobygs78@gmail.com");
         EmailRequest emailRequest = new EmailRequestBuilder()
-//                .setFrom(from)
-//                .setTo(toJacov)
-//                .to(toNamesList)
                 .setWithSubject("hey hello")
                 .setWithHTMLText("<img src='cid:wink1'><b>We should meet up!</b><img src='cid:wink2'>")
                 .setWithPlainText("Please view this email in a modern email client!")

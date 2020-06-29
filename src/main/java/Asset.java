@@ -1,10 +1,13 @@
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "assets")
+
 public class Asset {
     @DatabaseField(generatedId = true)
     private int id;
+
+    @DatabaseField
+    private long postId;
 
     @DatabaseField
     String address;
@@ -33,6 +36,15 @@ public class Asset {
     public void setId(int id) {
         this.id = id;
     }
+
+    public long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(long postId) {
+        this.postId = postId;
+    }
+
     public String getAddress() {
         return address;
     }

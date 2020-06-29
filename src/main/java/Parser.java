@@ -1,5 +1,6 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -53,7 +54,28 @@ public class Parser {
         }
         catch (Exception e){
         }
+        Elements postinginfos = doc.getElementsByClass("postinginfos");
+        long postId = -1;
+        if (postinginfos != null && !postinginfos.isEmpty()) {
+            Element postingInfo0 = postinginfos.get(0);
+            Elements postinginfoList = postingInfo0.getElementsByClass("postinginfo");
+            System.out.println(postinginfoList);
+            for (Element postingInfo : postinginfoList) {
+                String text = postingInfo.text();
+                if (text != null && text.contains("post id")){
+                    String[] splitArr = text.split(" ");
+                    if(splitArr != null && splitArr.length == 3){
+                        try {
+                            postId = Long.parseLong(splitArr[2]);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
         Asset asset = AssetBuilder.builder()
+                                .setPostId(postId)
                                 .setAddress(address)
                                 .setDescription(description)
                                 .setUrl(innerUrl)

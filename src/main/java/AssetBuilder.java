@@ -1,10 +1,16 @@
 public class AssetBuilder {
+    long postId;
     String address;
     String description;
     String url;
     long dateTime;
     Coordinate coordinate;
 
+
+    public AssetBuilder setPostId(long postId) {
+        this.postId = postId;
+        return this;
+    }
 
     public AssetBuilder setDateTime(long dateTime) {
         this.dateTime = dateTime;
@@ -39,6 +45,7 @@ public class AssetBuilder {
 
     public Asset build() {
         Asset asset = new Asset();
+        asset.setPostId(postId);
         asset.setAddress(address);
         asset.setLat(coordinate.lat);
         asset.setLon(coordinate.lon);

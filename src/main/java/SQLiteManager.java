@@ -1,11 +1,13 @@
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.mapped.MappedPreparedStmt;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 public class SQLiteManager implements DBManager {
@@ -22,7 +24,11 @@ public class SQLiteManager implements DBManager {
             connectionSource = new JdbcConnectionSource(DATABASE_URL);
             SQLiteManager sqLiteManager = new SQLiteManager();
             sqLiteManager.setupDatabase(connectionSource);
-            sqLiteManager.assetsDao.create(assetsFromCSV.get(0));
+            sqLiteManager.assetsDao.create(assetsFromCSV);
+            List<Asset> assets = sqLiteManager.assetsDao.queryForAll();
+            Asset asset = sqLiteManager.assetsDao.queryForId(1);
+            System.out.println(assets);
+            System.out.println(asset);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -37,8 +43,9 @@ public class SQLiteManager implements DBManager {
         assetsDao = DaoManager.createDao(connectionSource, Asset.class);
 
         // if you need to create the table
-        TableUtils.dropTable(assetsDao, false);
-        TableUtils.createTableIfNotExists(connectionSource, Asset.class);
+        TableUtils.dropTable(assetsDao, true);
+        TableUtils.createTableIfNotExists(connectionSource, UserAsset.class);
+        TableUtils.createTableIfNotExists(connectionSource, CraigAsset.class);
     }
 
 }
