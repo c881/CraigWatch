@@ -32,7 +32,7 @@ public class Parser {
 
     }
 
-    public static Asset getAsset(String innerUrl) throws IOException {
+    public static CraigAsset getAsset(String innerUrl) throws IOException {
         Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
         long timeStamp = 0;
 
@@ -74,14 +74,14 @@ public class Parser {
                 }
             }
         }
-        Asset asset = AssetBuilder.builder()
+        CraigAsset asset = AssetBuilder.builder()
                                 .setPostId(postId)
                                 .setAddress(address)
                                 .setDescription(description)
                                 .setUrl(innerUrl)
                                 .setCoordinate(coordinate)
                                 .setDateTime(timeStamp)
-                                .build();
+                                .buildCraigAsset();
         return asset;
     }
 

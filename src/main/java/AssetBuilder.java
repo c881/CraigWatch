@@ -43,8 +43,15 @@ public class AssetBuilder {
     }
 
 
-    public Asset build() {
-        Asset asset = new Asset();
+    public UserAsset buildUserAsset(){
+        return build(new UserAsset());
+    }
+
+    public CraigAsset buildCraigAsset(){
+        return build(new CraigAsset());
+    }
+
+    private <T extends Asset> T build(T asset) {
         asset.setPostId(postId);
         asset.setAddress(address);
         asset.setLat(coordinate.lat);

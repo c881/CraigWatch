@@ -3,10 +3,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //
 /*
@@ -19,24 +16,25 @@ Needed components:
 public class Main {
     public static void main(String[] args) {
         try {
+            SQLiteManager sqLiteManager = SQLiteManager.getInstance();
             // Create an object of filereader
             // class with CSV file as a parameter.
-            List<Asset> ownAssets = getAssetsFromCSV();
+            List<UserAsset> ownAssets = getAssetsFromCSV();
             String url = "https://sfbay.craigslist.org/search/sfc/apa";
             Set<String> links = Parser.getLinks(url);
-            Set<Asset> assetsForRent = new HashSet<>();
+            Set<CraigAsset> assetsForRent = new HashSet<>();
             for (String link : links) {
-                Asset assetForRent = Parser.getAsset(link);
+                CraigAsset assetForRent = Parser.getAsset(link);
                 assetsForRent.add(assetForRent);
             }
-
+            Collection<CraigAsset> newCraigAssests = sqLiteManager.writeToTableAndRetrieveNewAssests(assetsForRent);
             List<AssetsWrapper> assetsWrappers = new ArrayList<>();
             DistanceCalculator calculator = new HaversineCalculator();
 
             double marginDistance = 15;
 
             for (Asset own : ownAssets) {
-                for (Asset forRent : assetsForRent) {
+                for (Asset forRent : newCraigAssests) {
                     Coordinate ownCoor = new Coordinate(own.lat, own.lon);
                     Coordinate forRentCoor = new Coordinate(forRent.lat, forRent.lon);
                     AssetsWrapper assetsWrapper = new AssetsWrapper(own, forRent,
@@ -45,10 +43,8 @@ public class Main {
                 }
             }
 
-            for (AssetsWrapper assetsWrapper : assetsWrappers)
-            {
-                if (assetsWrapper.distance < marginDistance)
-                {
+            for (AssetsWrapper assetsWrapper : assetsWrappers) {
+                if (assetsWrapper.distance < marginDistance) {
                     System.out.println(assetsWrapper);
                 }
             }
@@ -60,7 +56,7 @@ public class Main {
     }
 
     @NotNull
-    public static List<Asset> getAssetsFromCSV() throws IOException {
+    public static List<UserAsset> getAssetsFromCSV() throws IOException {
         String fileName = "resources/MyApartments.csv";
         FileReader filereader = new FileReader(fileName);
 
@@ -68,7 +64,7 @@ public class Main {
         // file reader as a parameter
         CSVReader csvReader = new CSVReader(filereader);
         String[] nextRecord;
-        List<Asset> ownAssets = new ArrayList<>();
+        List<UserAsset> ownAssets = new ArrayList<>();
 
         // we are going to read data line by line
         while ((nextRecord = csvReader.readNext()) != null) {
@@ -76,12 +72,12 @@ public class Main {
             double lat = Double.parseDouble(nextRecord[nextRecord.length-1]);
             Coordinate coordinate = new Coordinate(lon,lat);
 
-            Asset asset = AssetBuilder.builder()
+            UserAsset asset = AssetBuilder.builder()
                     .setAddress(nextRecord[1])
                     .setDescription(nextRecord[2])
                     .setUrl(nextRecord[0])
                     .setCoordinate(coordinate)
-                    .build();
+                    .buildUserAsset();
 
             ownAssets.add(asset);
 
