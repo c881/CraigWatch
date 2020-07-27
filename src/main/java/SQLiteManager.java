@@ -80,8 +80,8 @@ public class SQLiteManager implements DBManager {
         cAssetsDao = DaoManager.createDao(connectionSource, CraigAsset.class);
 
         // if you need to create the table
-        TableUtils.dropTable(uAssetsDao, true);
-        TableUtils.dropTable(cAssetsDao, true);
+//        TableUtils.dropTable(uAssetsDao, true);
+//        TableUtils.dropTable(cAssetsDao, true);
         TableUtils.createTableIfNotExists(connectionSource, UserAsset.class);
         TableUtils.createTableIfNotExists(connectionSource, CraigAsset.class);
     }
