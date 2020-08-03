@@ -3,6 +3,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 //
@@ -19,14 +22,15 @@ public class Main {
             SQLiteManager sqLiteManager = SQLiteManager.getInstance();
             // Create an object of filereader
             // class with CSV file as a parameter.
-            List<UserAsset> ownAssets = getAssetsFromCSV();
+//            List<UserAsset> ownAssets = getAssetsFromCSV();
+            List<UserAsset> ownAssets = getAssetsFromFile();
             ConfigManager configManager = ConfigManager.getInstance();
             String url = configManager.getValue("url", "https://sfbay.craigslist.org/search/sfc/apa");
-//            String url = "https://sfbay.craigslist.org/search/sfc/apa";
+
             Set<String> links = Parser.getLinks(url);
             Set<CraigAsset> assetsForRent = new HashSet<>();
             for (String link : links) {
-                CraigAsset assetForRent = Parser.getAsset(link);
+                CraigAsset assetForRent = Parser.getCraigAsset(link);
                 assetsForRent.add(assetForRent);
             }
             Collection<CraigAsset> newCraigAssests = sqLiteManager.writeToTableAndRetrieveNewAssests(assetsForRent);
@@ -57,9 +61,24 @@ public class Main {
         }
     }
 
-    @NotNull
+    public static List<UserAsset> getAssetsFromFile() throws IOException {
+        String fileName = ConfigManager.getInstance()
+                .getValue("fileName","resources/MyApartments.csv");
+        List<String> lines = Files.readAllLines(Paths.get(fileName), Charset.defaultCharset());
+        List<UserAsset> ownAssets = new ArrayList<>();
+        for(String line: lines){
+            UserAsset asset = Parser.getUserAsset(line);
+            ownAssets.add(asset);
+        }
+//        System.out.println(ownAssets);
+        return ownAssets;
+    }
+
+
+
     public static List<UserAsset> getAssetsFromCSV() throws IOException {
-        String fileName = "resources/MyApartments.csv";
+        String fileName = ConfigManager.getInstance()
+                .getValue("fileName","resources/MyApartments.csv");
         FileReader filereader = new FileReader(fileName);
 
         // create csvReader object passing

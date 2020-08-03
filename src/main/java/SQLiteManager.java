@@ -41,27 +41,13 @@ public class SQLiteManager implements DBManager {
         }
         return instance;
     }
-//    public static synchronized SQLiteManager getSyncInstance1(){ // אופציה נוספת
-//        if (instance == null) {
-//            instance = new SQLiteManager();
-//        }
-//        return instance;
-
-//    }
-
-//    public static SQLiteManager getInstance(){
-//        return instance;
-//    }
 
     // עד כאן
     public static void main(String[] args) {
         try {
             List<UserAsset> assetsFromCSV = Main.getAssetsFromCSV();
             // create our data-source for the database
-//            ConnectionSource connectionSource = new JdbcConnectionSource(DATABASE_URL);
-//            SQLiteManager sqLiteManager = new SQLiteManager();
             SQLiteManager sqLiteManager = SQLiteManager.getInstance();
-//            sqLiteManager.setupDatabase(connectionSource);
             sqLiteManager.uAssetsDao.create(assetsFromCSV);
             List<UserAsset> userAssets = sqLiteManager.uAssetsDao.queryForAll();
             Asset asset = sqLiteManager.uAssetsDao.queryForId(1);

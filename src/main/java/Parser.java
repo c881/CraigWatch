@@ -4,10 +4,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,18 +17,27 @@ public class Parser {
         String url = "https://sfbay.craigslist.org/search/sfc/apa";
 
         Set<String> outerLinks = getLinks(url);
-        System.out.println(outerLinks);
+//        System.out.println(outerLinks);
 
 // לעבור על כל רשימת הלינקים לשלוף את כל ה-ASSESTS
 
         String innerUrl = outerLinks.iterator().next();
 
-        Asset apartment = getAsset(innerUrl);
-        System.out.println(apartment);
+        Asset apartment = getCraigAsset(innerUrl);
+//        System.out.println(apartment);
 
     }
 
-    public static CraigAsset getAsset(String innerUrl) throws IOException {
+    public static CraigAsset getCraigAsset(String innerUrl) throws IOException {
+        AssetBuilder assetBuilder = getAssetBuilder(innerUrl);
+        return assetBuilder.buildCraigAsset();
+    }
+    public static UserAsset getUserAsset(String innerUrl) throws IOException {
+        AssetBuilder assetBuilder = getAssetBuilder(innerUrl);
+        return assetBuilder.buildUserAsset();
+    }
+
+    private static AssetBuilder getAssetBuilder(String innerUrl) throws IOException {
         Document doc = Jsoup.connect(innerUrl).maxBodySize(0).get();
         long timeStamp = 0;
 
@@ -59,7 +64,7 @@ public class Parser {
         if (postinginfos != null && !postinginfos.isEmpty()) {
             Element postingInfo0 = postinginfos.get(0);
             Elements postinginfoList = postingInfo0.getElementsByClass("postinginfo");
-            System.out.println(postinginfoList);
+//            System.out.println(postinginfoList);
             for (Element postingInfo : postinginfoList) {
                 String text = postingInfo.text();
                 if (text != null && text.contains("post id")){
@@ -74,15 +79,14 @@ public class Parser {
                 }
             }
         }
-        CraigAsset asset = AssetBuilder.builder()
-                                .setPostId(postId)
-                                .setAddress(address)
-                                .setDescription(description)
-                                .setUrl(innerUrl)
-                                .setCoordinate(coordinate)
-                                .setDateTime(timeStamp)
-                                .buildCraigAsset();
-        return asset;
+        AssetBuilder assetBuilder = AssetBuilder.builder()
+                .setPostId(postId)
+                .setAddress(address)
+                .setDescription(description)
+                .setUrl(innerUrl)
+                .setCoordinate(coordinate)
+                .setDateTime(timeStamp);
+        return assetBuilder;
     }
 
     public static Set<String> getLinks(String url) throws IOException {
