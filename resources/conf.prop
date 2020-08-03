@@ -1,7 +1,7 @@
 fileName=resources/MyApartments.csv
-marginDistance=15
+marginDistance=15.0
 url=https://sfbay.craigslist.org/search/sfc/apa
-DATABASE_URL=jdbc:sqlite:test1
+databaseUrl=jdbc:sqlite:test1
 
 
 # comment

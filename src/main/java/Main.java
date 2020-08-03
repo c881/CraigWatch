@@ -20,7 +20,9 @@ public class Main {
             // Create an object of filereader
             // class with CSV file as a parameter.
             List<UserAsset> ownAssets = getAssetsFromCSV();
-            String url = "https://sfbay.craigslist.org/search/sfc/apa";
+            ConfigManager configManager = ConfigManager.getInstance();
+            String url = configManager.getValue("url", "https://sfbay.craigslist.org/search/sfc/apa");
+//            String url = "https://sfbay.craigslist.org/search/sfc/apa";
             Set<String> links = Parser.getLinks(url);
             Set<CraigAsset> assetsForRent = new HashSet<>();
             for (String link : links) {
@@ -31,7 +33,7 @@ public class Main {
             List<AssetsWrapper> assetsWrappers = new ArrayList<>();
             DistanceCalculator calculator = new HaversineCalculator();
 
-            double marginDistance = 15;
+            double marginDistance = configManager.getValue("marginDistance", 1.0);
 
             for (Asset own : ownAssets) {
                 for (Asset forRent : newCraigAssests) {

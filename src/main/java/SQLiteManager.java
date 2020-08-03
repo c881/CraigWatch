@@ -14,7 +14,8 @@ import java.util.Set;
 
 public class SQLiteManager implements DBManager {
     // we are using the in-memory H2 database
-    private final static String DATABASE_URL = "jdbc:sqlite:test1";
+    private final static String DATABASE_URL = ConfigManager.getInstance()
+            .getValue("databaseUrl", "jdbc:sqlite:test1");
 
     private Dao<UserAsset, Integer> uAssetsDao;
     private Dao<CraigAsset, Integer> cAssetsDao;
