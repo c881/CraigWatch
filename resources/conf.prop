@@ -1,6 +1,8 @@
 fileName=resources/MyApartments.csv
 marginDistance=15.0
-url=https://sfbay.craigslist.org/search/sfc/apa
+baseUrl=https://sfbay.craigslist.org/search/sfc/apa
+urlPageNextPattern=?s=%d
+pageIndexJump=120
 databaseUrl=jdbc:sqlite:test1
 
 

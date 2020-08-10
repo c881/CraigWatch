@@ -73,7 +73,7 @@ public class SQLiteManager implements DBManager {
         TableUtils.createTableIfNotExists(connectionSource, CraigAsset.class);
     }
 
-    public Collection<CraigAsset> writeToTableAndRetrieveNewAssests(Set<CraigAsset> assetsForRent) {
+    public Collection<CraigAsset> writeToTableAndRetrieveNewAssets(Set<CraigAsset> assetsForRent) {
         Collection<CraigAsset> newlyCreated = new HashSet<>();
         for (CraigAsset craigAsset : assetsForRent) {
             try {

@@ -1,5 +1,6 @@
 import com.opencsv.CSVReader;
-import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,41 +18,52 @@ Needed components:
  Notifier - Favorite format massage
 */
 public class Main {
+    public static Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
         try {
+            logger.debug("dwkjerhwejrasd", new Exception());
             SQLiteManager sqLiteManager = SQLiteManager.getInstance();
             // Create an object of filereader
             // class with CSV file as a parameter.
 //            List<UserAsset> ownAssets = getAssetsFromCSV();
             List<UserAsset> ownAssets = getAssetsFromFile();
             ConfigManager configManager = ConfigManager.getInstance();
-            String url = configManager.getValue("url", "https://sfbay.craigslist.org/search/sfc/apa");
-
-            Set<String> links = Parser.getLinks(url);
-            Set<CraigAsset> assetsForRent = new HashSet<>();
-            for (String link : links) {
-                CraigAsset assetForRent = Parser.getCraigAsset(link);
-                assetsForRent.add(assetForRent);
-            }
-            Collection<CraigAsset> newCraigAssests = sqLiteManager.writeToTableAndRetrieveNewAssests(assetsForRent);
-            List<AssetsWrapper> assetsWrappers = new ArrayList<>();
-            DistanceCalculator calculator = new HaversineCalculator();
-
+            String baseUrl = configManager.getValue("baseUrl", "https://sfbay.craigslist.org/search/sfc/apa");
+            String urlPageNextPattern = configManager.getValue("urlPageNextPattern", "?s=%d");
+            int pageIndexJump = configManager.getValue("pageIndexJump", 120);
+            String urlFormat = baseUrl + urlPageNextPattern;
             double marginDistance = configManager.getValue("marginDistance", 1.0);
 
-            for (Asset own : ownAssets) {
-                for (Asset forRent : newCraigAssests) {
-                    Coordinate ownCoor = new Coordinate(own.lat, own.lon);
-                    Coordinate forRentCoor = new Coordinate(forRent.lat, forRent.lon);
-                    AssetsWrapper assetsWrapper = new AssetsWrapper(own, forRent,
-                            calculator.calculate(ownCoor, forRentCoor));
-                    assetsWrappers.add(assetsWrapper);
+            for (int i = 0;i < 2;i++) {
+                String url = String.format(urlFormat, i * pageIndexJump);
+                System.out.println(url);
+                Set<String> links = Parser.getLinks(url);
+                Set<CraigAsset> assetsForRent = new HashSet<>();
+                for (String link : links) {
+                    CraigAsset assetForRent = Parser.getCraigAsset(link);
+                    assetsForRent.add(assetForRent);
                 }
-            }
+                Collection<CraigAsset> newCraigAssests = sqLiteManager.writeToTableAndRetrieveNewAssets(assetsForRent);
+                List<AssetsWrapper> assetsWrappers = new ArrayList<>();
+                DistanceCalculator calculator = new HaversineCalculator();
 
-            for (AssetsWrapper assetsWrapper : assetsWrappers) {
-                if (assetsWrapper.distance < marginDistance) {
-                    System.out.println(assetsWrapper);
+                for (Asset own : ownAssets) {
+                    for (Asset forRent : newCraigAssests) {
+                        Coordinate ownCoor = new Coordinate(own.lat, own.lon);
+                        Coordinate forRentCoor = new Coordinate(forRent.lat, forRent.lon);
+                        AssetsWrapper assetsWrapper = new AssetsWrapper(own, forRent,
+                                calculator.calculate(ownCoor, forRentCoor));
+                        assetsWrappers.add(assetsWrapper);
+                    }
+                }
+                for (AssetsWrapper assetsWrapper : assetsWrappers) {
+                    if (assetsWrapper.distance < marginDistance) {
+                        System.out.println(assetsWrapper);
+                    }
+                }
+                if (newCraigAssests.size() < assetsForRent.size()){
+                    break;
                 }
             }
 
@@ -73,7 +85,6 @@ public class Main {
 //        System.out.println(ownAssets);
         return ownAssets;
     }
-
 
 
     public static List<UserAsset> getAssetsFromCSV() throws IOException {
