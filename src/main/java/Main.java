@@ -34,7 +34,7 @@ public class Main {
             String urlFormat = baseUrl + urlPageNextPattern;
             double marginDistance = configManager.getValue("marginDistance", 1.0);
             List<UserAsset> ownAssets = getAssetsFromFile();
-            Collection<Asset> newUserAssests = sqLiteManager.writeToTableAndRetrieveNewAssets(ownAssets);
+            Collection<UserAsset> newUserAssests = sqLiteManager.writeToTableUserAndRetrive(ownAssets);
             for (int i = 0;i < 2;i++) {
                 System.out.println(java.time.LocalDateTime.now());
                 String url = String.format(urlFormat, i * pageIndexJump);
