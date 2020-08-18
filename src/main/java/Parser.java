@@ -8,9 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-// צריכים להוציא את titletextonly ואת div class="mapaddress"
-// להפוך את העבודה ל -ASSET במקום COORDINATE
-
 public class Parser {
 
     public static void main(String[] args) throws IOException {
@@ -19,7 +16,6 @@ public class Parser {
         Set<String> outerLinks = getLinks(url);
 //        System.out.println(outerLinks);
 
-// לעבור על כל רשימת הלינקים לשלוף את כל ה-ASSESTS
 
         String innerUrl = outerLinks.iterator().next();
 

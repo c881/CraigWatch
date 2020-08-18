@@ -18,24 +18,25 @@ Needed components:
  Notifier - Favorite format massage
 */
 public class Main {
-    public static Logger logger = LoggerFactory.getLogger(Main.class);
+    //public static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         try {
-            logger.debug("dwkjerhwejrasd", new Exception());
+            //logger.debug("dwkjerhwejrasd", new Exception());
             SQLiteManager sqLiteManager = SQLiteManager.getInstance();
             // Create an object of filereader
             // class with CSV file as a parameter.
 //            List<UserAsset> ownAssets = getAssetsFromCSV();
-            List<UserAsset> ownAssets = getAssetsFromFile();
             ConfigManager configManager = ConfigManager.getInstance();
             String baseUrl = configManager.getValue("baseUrl", "https://sfbay.craigslist.org/search/sfc/apa");
             String urlPageNextPattern = configManager.getValue("urlPageNextPattern", "?s=%d");
             int pageIndexJump = configManager.getValue("pageIndexJump", 120);
             String urlFormat = baseUrl + urlPageNextPattern;
             double marginDistance = configManager.getValue("marginDistance", 1.0);
-
+            List<UserAsset> ownAssets = getAssetsFromFile();
+            Collection<Asset> newUserAssests = sqLiteManager.writeToTableAndRetrieveNewAssets(ownAssets);
             for (int i = 0;i < 2;i++) {
+                System.out.println(java.time.LocalDateTime.now());
                 String url = String.format(urlFormat, i * pageIndexJump);
                 System.out.println(url);
                 Set<String> links = Parser.getLinks(url);

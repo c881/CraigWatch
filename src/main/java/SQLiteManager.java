@@ -19,7 +19,7 @@ public class SQLiteManager implements DBManager {
 
     private Dao<UserAsset, Integer> uAssetsDao;
     private Dao<CraigAsset, Integer> cAssetsDao;
-    // הגדרת סינגלטון
+    // Define a singelton
     private static SQLiteManager instance = null;//new SQLiteManager();
 
     private SQLiteManager(){
@@ -31,7 +31,7 @@ public class SQLiteManager implements DBManager {
             throwables.printStackTrace();
         }
     }
-    public static SQLiteManager getInstance(){ // אופציה נוספת
+    public static SQLiteManager getInstance(){ // Another Option
         if (instance == null) {
             synchronized (SQLiteManager.class) {
                 if (instance == null) {
@@ -42,7 +42,7 @@ public class SQLiteManager implements DBManager {
         return instance;
     }
 
-    // עד כאן
+    // till here
     public static void main(String[] args) {
         try {
             List<UserAsset> assetsFromCSV = Main.getAssetsFromCSV();
