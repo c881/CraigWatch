@@ -35,8 +35,8 @@ public class Main {
             double marginDistance = configManager.getValue("marginDistance", 1.0);
             List<UserAsset> ownAssets = getAssetsFromFile();
             Collection<UserAsset> newUserAssests = sqLiteManager.writeToTableUserAndRetrive(ownAssets);
+            System.out.println(java.time.LocalDateTime.now());
             for (int i = 0;i < 2;i++) {
-                System.out.println(java.time.LocalDateTime.now());
                 String url = String.format(urlFormat, i * pageIndexJump);
                 System.out.println(url);
                 Set<String> links = Parser.getLinks(url);
@@ -63,6 +63,7 @@ public class Main {
                         System.out.println(assetsWrapper);
                     }
                 }
+                System.out.println(java.time.LocalDateTime.now());
                 if (newCraigAssests.size() < assetsForRent.size()){
                     break;
                 }
