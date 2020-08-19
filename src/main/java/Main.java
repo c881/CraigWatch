@@ -34,17 +34,19 @@ public class Main {
             String urlFormat = baseUrl + urlPageNextPattern;
             double marginDistance = configManager.getValue("marginDistance", 1.0);
             List<UserAsset> ownAssets = getAssetsFromFile();
-            Collection<UserAsset> newUserAssests = sqLiteManager.writeToTableUserAndRetrive(ownAssets);
+            //Collection<UserAsset> newUserAssests = sqLiteManager.writeToTableUserAndRetrive(ownAssets);
             System.out.println(java.time.LocalDateTime.now());
             for (int i = 0;i < 2;i++) {
                 String url = String.format(urlFormat, i * pageIndexJump);
                 System.out.println(url);
                 Set<String> links = Parser.getLinks(url);
                 Set<CraigAsset> assetsForRent = new HashSet<>();
-                for (String link : links) {
-                    CraigAsset assetForRent = Parser.getCraigAsset(link);
-                    assetsForRent.add(assetForRent);
-                }
+                // To threads-----------------------------------------------------
+                for (String link : links) {                                     //
+                    CraigAsset assetForRent = Parser.getCraigAsset(link);       //
+                    assetsForRent.add(assetForRent);                            //
+                }                                                               //
+                //----------------------------------------------------------------
                 Collection<CraigAsset> newCraigAssests = sqLiteManager.writeToTableAndRetrieveNewAssets(assetsForRent);
                 List<AssetsWrapper> assetsWrappers = new ArrayList<>();
                 DistanceCalculator calculator = new HaversineCalculator();
@@ -60,11 +62,12 @@ public class Main {
                 }
                 for (AssetsWrapper assetsWrapper : assetsWrappers) {
                     if (assetsWrapper.distance < marginDistance) {
-                        System.out.println(assetsWrapper);
+                       // System.out.println(assetsWrapper);
                     }
                 }
-                System.out.println(java.time.LocalDateTime.now());
+                System.out.println(url + ' ' + java.time.LocalDateTime.now());
                 if (newCraigAssests.size() < assetsForRent.size()){
+                    System.out.println(url);
                     break;
                 }
             }

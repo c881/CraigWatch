@@ -87,18 +87,18 @@ public class SQLiteManager implements DBManager {
         }
         return newlyCreated;
     }
-    public Collection<UserAsset> writeToTableUserAndRetrive(List<UserAsset> ownAssets) {
-        Collection<UserAsset> newlyCreated = new HashSet<>();
-        for (UserAsset userAsset : ownAssets) {
-            try {
-                Dao.CreateOrUpdateStatus createOrUpdateStatus = uAssetsDao.createOrUpdate(userAsset);
-                if (createOrUpdateStatus.isCreated()) {
-                    newlyCreated.add(userAsset);
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        return newlyCreated;
-    }
+//    public Collection<UserAsset> writeToTableUserAndRetrive(List<UserAsset> ownAssets) {
+//        Collection<UserAsset> newlyCreated = new HashSet<>();
+//        for (UserAsset userAsset : ownAssets) {
+//            try {
+//                Dao.CreateOrUpdateStatus createOrUpdateStatus = uAssetsDao.createOrUpdate(userAsset);
+//                if (createOrUpdateStatus.isCreated()) {
+//                    newlyCreated.add(userAsset);
+//                }
+//            } catch (SQLException throwables) {
+//                throwables.printStackTrace();
+//            }
+//        }
+//        return newlyCreated;
+//    }
 }
