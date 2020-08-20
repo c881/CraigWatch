@@ -1,5 +1,5 @@
 fileName=resources/MyApartments.csv
-marginDistance=15.0
+marginDistance=2.0
 baseUrl=https://sfbay.craigslist.org/search/sfc/apa
 urlPageNextPattern=?s=%d
 pageIndexJump=120

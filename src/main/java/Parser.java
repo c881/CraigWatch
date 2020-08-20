@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-public class Parser {
+public class Parser implements Runnable{   // - for using as threads.
 
     public static void main(String[] args) throws IOException {
         String url = "https://sfbay.craigslist.org/search/sfc/apa";
@@ -24,10 +24,16 @@ public class Parser {
 
     }
 
-    public static CraigAsset getCraigAsset(String innerUrl) throws IOException {
+    @Override
+    public void run() {
+        
+    }
+
+    public static CraigAsset getCraigAsset (String innerUrl) throws IOException {
         AssetBuilder assetBuilder = getAssetBuilder(innerUrl);
         return assetBuilder.buildCraigAsset();
     }
+
     public static UserAsset getUserAsset(String innerUrl) throws IOException {
         AssetBuilder assetBuilder = getAssetBuilder(innerUrl);
         return assetBuilder.buildUserAsset();

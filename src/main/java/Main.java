@@ -16,6 +16,8 @@ Needed components:
  Parser - parsing
  Address metcher - WWW to local address
  Notifier - Favorite format massage
+ Logger
+
 */
 public class Main {
     //public static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -62,12 +64,12 @@ public class Main {
                 }
                 for (AssetsWrapper assetsWrapper : assetsWrappers) {
                     if (assetsWrapper.distance < marginDistance) {
-                       // System.out.println(assetsWrapper);
+                        System.out.println(assetsWrapper);
                     }
                 }
                 System.out.println(url + ' ' + java.time.LocalDateTime.now());
                 if (newCraigAssests.size() < assetsForRent.size()){
-                    System.out.println(url);
+                    System.out.println(url + " Break");
                     break;
                 }
             }
