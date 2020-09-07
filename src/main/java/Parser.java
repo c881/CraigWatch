@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-public class Parser implements Runnable{   // - for using as threads.
+public class Parser{
 
     public static void main(String[] args) throws IOException {
         String url = "https://sfbay.craigslist.org/search/sfc/apa";
@@ -22,11 +22,6 @@ public class Parser implements Runnable{   // - for using as threads.
         Asset apartment = getCraigAsset(innerUrl);
 //        System.out.println(apartment);
 
-    }
-
-    @Override
-    public void run() {
-        
     }
 
     public static CraigAsset getCraigAsset (String innerUrl) throws IOException {
@@ -51,7 +46,14 @@ public class Parser implements Runnable{   // - for using as threads.
         Elements date_timeago = doc.getElementById("display-date").getElementsByTag("time");
         if (!date_timeago.isEmpty()) {
             String date_time = date_timeago.first().attr("datetime");
-            timeStamp = TimeUtil.getEpoch(date_time);
+            try {
+                timeStamp = TimeUtil.getEpoch(date_time);
+            }
+            catch (Exception e){
+                System.out.println(innerUrl);
+                System.out.println("Timestamp is empty");
+                throw e;
+            }
         }
 
         Coordinate coordinate = new Coordinate(Double.parseDouble(split[0]),Double.parseDouble(split[1]));

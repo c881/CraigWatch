@@ -4,10 +4,16 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 //
 /*
@@ -36,18 +42,39 @@ public class Main {
             String urlFormat = baseUrl + urlPageNextPattern;
             double marginDistance = configManager.getValue("marginDistance", 1.0);
             List<UserAsset> ownAssets = getAssetsFromFile();
-            //Collection<UserAsset> newUserAssests = sqLiteManager.writeToTableUserAndRetrive(ownAssets);
-            System.out.println(java.time.LocalDateTime.now());
+
+//            Callable<CraigAsset> task = (link) ->{
+//                Parser.getCraigAsset(link);
+//            }
+
+
+            System.out.println(LocalDateTime.now());
             for (int i = 0;i < 2;i++) {
+                List<MyCallable> callables = new ArrayList<>();
                 String url = String.format(urlFormat, i * pageIndexJump);
                 System.out.println(url);
                 Set<String> links = Parser.getLinks(url);
-                Set<CraigAsset> assetsForRent = new HashSet<>();
+                //Set<CraigAsset> assetsForRent = new HashSet<>();
                 // To threads-----------------------------------------------------
                 for (String link : links) {                                     //
-                    CraigAsset assetForRent = Parser.getCraigAsset(link);       //
-                    assetsForRent.add(assetForRent);                            //
-                }                                                               //
+//                    CraigAsset assetForRent = Parser.getCraigAsset(link);       //
+                    MyCallable task = new MyCallable();
+                    task.setLink(link);
+                    callables.add(task);
+//                    assetsForRent.add(assetForRent);                            //
+                }
+                //
+                ExecutorService executor = Executors.newFixedThreadPool(16);
+                Set<CraigAsset> assetsForRent = executor.invokeAll(callables)
+                        .stream()
+                        .map(future -> {
+                            try {
+                                return future.get();
+                            } catch (Exception e) {
+                                throw new IllegalStateException(e);
+                            }
+                        })
+                        .collect(Collectors.toSet());
                 //----------------------------------------------------------------
                 Collection<CraigAsset> newCraigAssests = sqLiteManager.writeToTableAndRetrieveNewAssets(assetsForRent);
                 List<AssetsWrapper> assetsWrappers = new ArrayList<>();
@@ -67,7 +94,7 @@ public class Main {
                         System.out.println(assetsWrapper);
                     }
                 }
-                System.out.println(url + ' ' + java.time.LocalDateTime.now());
+                System.out.println(url + ' ' + LocalDateTime.now());
                 if (newCraigAssests.size() < assetsForRent.size()){
                     System.out.println(url + " Break");
                     break;
