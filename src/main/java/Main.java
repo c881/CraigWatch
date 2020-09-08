@@ -43,28 +43,21 @@ public class Main {
             double marginDistance = configManager.getValue("marginDistance", 1.0);
             List<UserAsset> ownAssets = getAssetsFromFile();
 
-//            Callable<CraigAsset> task = (link) ->{
-//                Parser.getCraigAsset(link);
-//            }
-
-
             System.out.println(LocalDateTime.now());
             for (int i = 0;i < 2;i++) {
                 List<MyCallable> callables = new ArrayList<>();
                 String url = String.format(urlFormat, i * pageIndexJump);
                 System.out.println(url);
                 Set<String> links = Parser.getLinks(url);
-                //Set<CraigAsset> assetsForRent = new HashSet<>();
                 // To threads-----------------------------------------------------
                 for (String link : links) {                                     //
-//                    CraigAsset assetForRent = Parser.getCraigAsset(link);       //
                     MyCallable task = new MyCallable();
                     task.setLink(link);
                     callables.add(task);
-//                    assetsForRent.add(assetForRent);                            //
                 }
-                //
-                ExecutorService executor = Executors.newFixedThreadPool(16);
+                // instead of calling 120 times for all the links in a page, one by one...
+                // sending X calls at once,
+                ExecutorService executor = Executors.newFixedThreadPool(10);
                 Set<CraigAsset> assetsForRent = executor.invokeAll(callables)
                         .stream()
                         .map(future -> {
@@ -100,7 +93,6 @@ public class Main {
                     break;
                 }
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -8,7 +8,7 @@ public class TimeUtil {
     public static long getEpoch(String dateTime) {
         long epoch = 0;
         try {
-//            Date date = df.parse(dateTime);
+//            Date date = df.parse(dateTime);  not thread safe so - syncronize or new;
             Date date = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ").parse(dateTime);
             epoch = date.getTime();
         } catch (ParseException e) {
